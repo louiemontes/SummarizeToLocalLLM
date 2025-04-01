@@ -51,7 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Save configuration to storage
   async function saveConfig() {
     try {
-      console.log("is this okay?");
       await chrome.storage.sync.set({ llmConfig: currentConfig });
 
       // Send message to content script to update config
@@ -169,37 +168,30 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Handle extract button click
-  // Replace your current tab message sending with this:
   extractButton.addEventListener("click", async function () {
-    try {
-      const tabs = await chrome.tabs.query({
-        active: true,
-        currentWindow: true,
-      });
-      if (tabs && tabs.length > 0) {
-        // Check if we can send a message to this tab
-        chrome.tabs.sendMessage(
-          tabs[0].id,
-          { action: "ping" },
-          function (response) {
-            if (chrome.runtime.lastError) {
-              console.log(
-                "Tab not ready yet:",
-                chrome.runtime.lastError.message
-              );
-              alert(
-                "Please refresh the page to activate the extension on this tab."
-              );
-            } else {
-              // Now it's safe to send the actual message
-              chrome.tabs.sendMessage(tabs[0].id, { action: "extractContent" });
-            }
-          }
-        );
-      }
-    } catch (error) {
-      console.error("Error:", error);
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (tabs && tabs.length > 0) {
+      chrome.tabs.sendMessage(tabs[0].id, { action: "extractContent" });
     }
+  });
+
+  // Add storage viewing functionality
+  const viewStorageButton = document.getElementById("view-storage-button");
+  const storageDisplay = document.getElementById("storage-display");
+
+  viewStorageButton.addEventListener("click", function () {
+    chrome.storage.sync.get(null, function (items) {
+      const jsonString = JSON.stringify(items, null, 2);
+      storageDisplay.textContent = jsonString;
+
+      if (storageDisplay.style.display === "block") {
+        storageDisplay.style.display = "none";
+        viewStorageButton.textContent = "View Storage Data";
+      } else {
+        storageDisplay.style.display = "block";
+        viewStorageButton.textContent = "Hide Storage Data";
+      }
+    });
   });
 
   // Initialize

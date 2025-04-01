@@ -187,3 +187,39 @@ textarea.form-control {
 .secondary-button:hover {
   background-color: #f8f9fa;
 }
+
+/* Debug section */
+.debug-section {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.debug-button {
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  color: #5f6368;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.debug-button:hover {
+  background-color: #f1f3f4;
+}
+
+.storage-display {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+}

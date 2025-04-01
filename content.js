@@ -277,32 +277,92 @@ async function handleExtractAndAnalyze() {
     // Show loading state
     const button = document.getElementById("llm-extractor-button");
     const originalText = button.textContent;
-    button.textContent = "Processing...";
+    button.textContent = "⏳ Processing...";
     button.disabled = true;
+    button.classList.add("processing");
+
+    // Create and show progress indicator
+    const progressIndicator = createProgressIndicator();
+    document.body.appendChild(progressIndicator);
 
     // Extract content
+    updateProgressStatus(progressIndicator, "Extracting page content...");
     const extractedText = extractPageContent();
 
     // Send to LLM
+    updateProgressStatus(progressIndicator, "Sending to LLM...");
     const llmResponse = await sendToLLM(extractedText);
 
     // Display result
-    displayResult(llmResponse);
+    updateProgressStatus(progressIndicator, "Processing complete!");
+    setTimeout(() => {
+      // Remove progress indicator
+      document.body.removeChild(progressIndicator);
 
-    // Reset button
-    button.textContent = originalText;
-    button.disabled = false;
+      // Display result
+      displayResult(llmResponse);
+
+      // Reset button with success state
+      button.textContent = "✅ " + originalText;
+      button.classList.remove("processing");
+      button.classList.add("success");
+      button.disabled = false;
+
+      // Reset button to original state after a delay
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.classList.remove("success");
+      }, 3000);
+    }, 500);
   } catch (error) {
     console.error("Error in extract and analyze process:", error);
+
+    // Remove progress indicator if it exists
+    const existingIndicator = document.getElementById("llm-progress-indicator");
+    if (existingIndicator) {
+      document.body.removeChild(existingIndicator);
+    }
 
     // Display error
     displayResult(`Error: ${error.message || error}`);
 
-    // Reset button
+    // Reset button with error state
     const button = document.getElementById("llm-extractor-button");
-    button.textContent = "🤖 Extract & Analyze";
+    button.textContent = "❌ Error";
+    button.classList.remove("processing");
+    button.classList.add("error");
     button.disabled = false;
+
+    // Reset button to original state after a delay
+    setTimeout(() => {
+      button.textContent = "🤖 Extract & Analyze";
+      button.classList.remove("error");
+    }, 3000);
   }
+}
+
+// Create a progress indicator
+function createProgressIndicator() {
+  const indicator = document.createElement("div");
+  indicator.id = "llm-progress-indicator";
+
+  const spinner = document.createElement("div");
+  spinner.className = "llm-spinner";
+
+  const statusText = document.createElement("div");
+  statusText.className = "llm-status-text";
+  statusText.textContent = "Starting...";
+
+  indicator.appendChild(spinner);
+  indicator.appendChild(statusText);
+
+  return indicator;
+}
+
+// Update the progress status
+function updateProgressStatus(indicator, message) {
+  const statusText = indicator.querySelector(".llm-status-text");
+  statusText.textContent = message;
 }
 
 // Display the result in the modal
@@ -327,10 +387,6 @@ function displayResult(content) {
 
 // Listen for messages from the popup or background script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === "ping") {
-    sendResponse({ status: "alive" });
-  }
-
   if (message.action === "updateConfig") {
     config = { ...config, ...message.config };
     sendResponse({ status: "Config updated" });
