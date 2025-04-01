@@ -327,6 +327,10 @@ function displayResult(content) {
 
 // Listen for messages from the popup or background script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === "ping") {
+    sendResponse({ status: "alive" });
+  }
+
   if (message.action === "updateConfig") {
     config = { ...config, ...message.config };
     sendResponse({ status: "Config updated" });

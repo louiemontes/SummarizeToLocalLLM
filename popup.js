@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Save configuration to storage
   async function saveConfig() {
     try {
+      console.log("is this okay?");
       await chrome.storage.sync.set({ llmConfig: currentConfig });
 
       // Send message to content script to update config
@@ -168,10 +169,36 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Handle extract button click
+  // Replace your current tab message sending with this:
   extractButton.addEventListener("click", async function () {
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    if (tabs && tabs.length > 0) {
-      chrome.tabs.sendMessage(tabs[0].id, { action: "extractContent" });
+    try {
+      const tabs = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
+      if (tabs && tabs.length > 0) {
+        // Check if we can send a message to this tab
+        chrome.tabs.sendMessage(
+          tabs[0].id,
+          { action: "ping" },
+          function (response) {
+            if (chrome.runtime.lastError) {
+              console.log(
+                "Tab not ready yet:",
+                chrome.runtime.lastError.message
+              );
+              alert(
+                "Please refresh the page to activate the extension on this tab."
+              );
+            } else {
+              // Now it's safe to send the actual message
+              chrome.tabs.sendMessage(tabs[0].id, { action: "extractContent" });
+            }
+          }
+        );
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   });
 
