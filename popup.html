@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Content to Local LLM</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Web Content to Local LLM</h1>
+      </header>
+
+      <div class="status-section">
+        <div class="status">
+          <span class="status-text">LLM Status: </span>
+          <span id="llm-status" class="status-indicator">Checking...</span>
+        </div>
+        <button id="extract-button" class="primary-button">
+          Extract & Analyze Page
+        </button>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-button active" data-tab="settings">Settings</button>
+        <button class="tab-button" data-tab="prompt">Prompt</button>
+      </div>
+
+      <div class="tab-content">
+        <div class="tab-pane active" id="settings-tab">
+          <form id="settings-form">
+            <div class="form-group">
+              <label for="llm-endpoint">LLM Endpoint URL:</label>
+              <input
+                type="text"
+                id="llm-endpoint"
+                name="llmEndpoint"
+                class="form-control"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="button-position">Button Position:</label>
+              <select
+                id="button-position"
+                name="floatingButtonPosition"
+                class="form-control"
+              >
+                <option value="bottom-right">Bottom Right</option>
+                <option value="bottom-left">Bottom Left</option>
+                <option value="top-right">Top Right</option>
+                <option value="top-left">Top Left</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="max-tokens">Max Tokens:</label>
+              <input
+                type="number"
+                id="max-tokens"
+                name="maxTokens"
+                class="form-control"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="temperature">Temperature:</label>
+              <input
+                type="range"
+                id="temperature"
+                name="temperature"
+                min="0"
+                max="1"
+                step="0.1"
+                class="form-control"
+              />
+              <div class="range-value">
+                <span id="temperature-value">0.7</span>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="tab-pane" id="prompt-tab">
+          <div class="form-group">
+            <label for="system-prompt">System Prompt:</label>
+            <textarea
+              id="system-prompt"
+              name="systemPrompt"
+              class="form-control"
+              rows="8"
+            ></textarea>
+            <div class="help-text">
+              This prompt guides how the LLM will process and respond to the
+              webpage content.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="save-button" class="primary-button">Save Settings</button>
+        <button id="reset-button" class="secondary-button">
+          Reset to Defaults
+        </button>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

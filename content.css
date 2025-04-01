@@ -1,0 +1,138 @@
+/* Styles for the webpage content extraction extension */
+
+/* Floating extract button */
+#llm-extractor-button {
+  position: fixed;
+  z-index: 10000;
+  padding: 10px 15px;
+  border-radius: 5px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+#llm-extractor-button:hover {
+  background-color: #3367d6;
+}
+
+#llm-extractor-button:disabled {
+  background-color: #a5bffa;
+  cursor: not-allowed;
+}
+
+/* Button positioning classes */
+#llm-extractor-button.top-left {
+  top: 20px;
+  left: 20px;
+}
+
+#llm-extractor-button.top-right {
+  top: 20px;
+  right: 20px;
+}
+
+#llm-extractor-button.bottom-left {
+  bottom: 20px;
+  left: 20px;
+}
+
+#llm-extractor-button.bottom-right {
+  bottom: 20px;
+  right: 20px;
+}
+
+/* Result modal */
+#llm-result-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10001;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+}
+
+#llm-result-modal.show {
+  display: flex;
+}
+
+#llm-modal-content {
+  width: 80%;
+  max-width: 800px;
+  max-height: 80vh;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+#llm-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+#llm-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+#llm-modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  line-height: 1;
+}
+
+#llm-result-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex-grow: 1;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+}
+
+#llm-result-content div {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+#llm-copy-button {
+  margin: 0 20px 20px;
+  padding: 8px 16px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  align-self: flex-end;
+  transition: background-color 0.2s ease;
+}
+
+#llm-copy-button:hover {
+  background-color: #3367d6;
+}

@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Web Content to Local LLM",
+  "version": "1.0.0",
+  "description": "Extract webpage content and send it to a local LLM running on localhost",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["http://localhost:1234/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
